@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leilão de Centavos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      text-align: center;
+      padding: 40px;
+    }
+    .leilao {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: auto;
+    }
+    .cronometro {
+      font-size: 32px;
+      color: red;
+      margin: 20px 0;
+    }
+    .botao-lance {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .historico {
+      margin-top: 30px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="leilao">
+    <h2>Leilão: Vale-Compra R$ 500,00</h2>
+    <h3>Valor Atual: R$ <span id="valor">0.01</span></h3>
+    <div class="cronometro" id="cronometro">10</div>
+    <button class="botao-lance" onclick="darLance()">Dar Lance</button>
+    <div class="historico">
+      <h4>Últimos Lances:</h4>
+      <ul id="lances"></ul>
+    </div>
+  </div>
+
+  <script>
+    let valorAtual = 0.01;
+    let tempo = 10;
+    let cronometro = document.getElementById("cronometro");
+    let valor = document.getElementById("valor");
+    let lances = document.getElementById("lances");
+    let intervalo;
+
+    function iniciarCronometro() {
+      clearInterval(intervalo);
+      intervalo = setInterval(() => {
+        tempo--;
+        cronometro.innerText = tempo;
+        if (tempo === 0) {
+          clearInterval(intervalo);
+          alert("Leilão finalizado! Último lance venceu.");
+        }
+      }, 1000);
+    }
+
+    function darLance() {
+      valorAtual += 0.01;
+      valorAtual = valorAtual.toFixed(2);
+      valor.innerText = valorAtual;
+      tempo = 10;
+      let novoLance = document.createElement("li");
+      novoLance.textContent = `Lance dado - R$ ${valorAtual}`;
+      lances.insertBefore(novoLance, lances.firstChild);
+      iniciarCronometro();
+    }
+
+    iniciarCronometro();
+  </script>
+</body>
+</html>
